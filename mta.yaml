@@ -1,0 +1,34 @@
+_schema-version: '3.2'
+ID: DIProxy
+version: 0.1.0
+modules:
+  - name: diproxy-approuter
+    type: approuter.nodejs
+    path: diproxy-approuter
+    requires:
+      - name: uaa_service
+      - name: destination_service
+      - name: cpapp-connectivity
+    parameters:
+      disk-quota: 256M
+      memory: 256M
+    properties:
+      DIPROXY_DEST: diproxy
+resources:
+  - name: uaa_service
+    parameters:
+      path: ./xs-security.json
+      service-plan: application
+      service: xsuaa
+    type: org.cloudfoundry.managed-service
+  - name: destination_service
+    parameters:
+      service-plan: lite
+      service: destination
+    type: org.cloudfoundry.managed-service
+
+  - name: cpapp-connectivity
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: connectivity
+      service-plan: lite
